@@ -15,7 +15,6 @@ import {
   MapPin, 
   Activity,
   AlertTriangle,
-  Edit,
   FileText,
   Heart,
   Droplet
@@ -31,11 +30,11 @@ export const PatientDetailsPage: React.FC = () => {
     const fetchPatient = async () => {
       if (!id) return;
       
-      console.log('PatientDetailsPage: Fetching patient with ID:', id);
+      console.log('Fetching patient with ID:', id);
       setLoading(true);
       try {
         const patientData = await patientService.getPatientById(id);
-        console.log('PatientDetailsPage: Received patient data:', patientData);
+        console.log('Received patient data:', patientData);
         setPatient(patientData);
       } catch (error) {
         console.error('Error fetching patient:', error);
@@ -108,7 +107,6 @@ export const PatientDetailsPage: React.FC = () => {
       subtitle={`Comprehensive information for ${patient.name}`}
     >
       <div className="space-y-6">
-        {/* Header Actions */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
           <Button 
             variant="outline" 
@@ -120,7 +118,6 @@ export const PatientDetailsPage: React.FC = () => {
           </Button>
         </div>
 
-        {/* Patient Overview Card */}
         <Card className="rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-8">
             <div className="flex items-center space-x-6">
@@ -188,7 +185,6 @@ export const PatientDetailsPage: React.FC = () => {
         </Card>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
-          {/* Medical Information */}
           <Card className="rounded-xl border border-gray-100 shadow-sm">
             <CardHeader className="px-4 sm:px-6 py-4 sm:py-5 border-b border-gray-100">
               <div className="flex items-center space-x-2">
@@ -228,7 +224,6 @@ export const PatientDetailsPage: React.FC = () => {
             </CardContent>
           </Card>
 
-          {/* Treatment Status */}
           <Card className="rounded-2xl border border-gray-100 shadow-sm">
             <CardHeader className="px-6 py-5 border-b border-gray-100">
               <div className="flex items-center space-x-2">
@@ -272,7 +267,6 @@ export const PatientDetailsPage: React.FC = () => {
             </CardContent>
           </Card>
 
-          {/* Notes */}
           <Card className="rounded-2xl border border-gray-100 shadow-sm">
             <CardHeader className="px-6 py-5 border-b border-gray-100">
               <div className="flex items-center space-x-2">

@@ -48,7 +48,6 @@ export const Sidebar: React.FC = () => {
     } fixed left-0 top-0 z-50 ${
       isMobile && isCollapsed ? '-translate-x-full' : 'translate-x-0'
     } lg:relative lg:translate-x-0 lg:z-auto`}>
-      {/* Logo/Brand Section */}
       <div className="flex justify-start px-[1rem] md:px-0 md:justify-center pb-1 pt-2 border-b border-gray-100">
         <div className="flex items-center justify-between">
           <button
@@ -76,7 +75,6 @@ export const Sidebar: React.FC = () => {
         </div>
       </div>
 
-      {/* Navigation */}
       <nav className="px-2 py-4 flex-1">
         <div className="space-y-2">
           {menuItems.map((item) => {
@@ -113,12 +111,10 @@ export const Sidebar: React.FC = () => {
         </div>
       </nav>
 
-      {/* User Profile Section */}
       <div className="mt-auto border-t border-gray-100">
         <div className="p-3">
           {!isCollapsed ? (
             <div className="space-y-3">
-              {/* User Info */}
               <div className="flex items-center space-x-3 p-2 rounded-lg bg-gray-50">
                 <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center flex-shrink-0">
                   <User className="w-4 h-4 text-white" />
@@ -144,12 +140,10 @@ export const Sidebar: React.FC = () => {
             </div>
           ) : (
             <div className="flex flex-col items-center space-y-3">
-              {/* User Avatar */}
               <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center">
                 <User className="w-4 h-4 text-white" />
               </div>
               
-              {/* Logout Button */}
               <button
                 onClick={handleLogout}
                 className="p-2 rounded-xl text-red-600 hover:bg-red-50 transition-all duration-200 group"

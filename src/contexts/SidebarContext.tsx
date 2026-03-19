@@ -26,12 +26,11 @@ export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({ child
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
-      const mobile = width < 1024; // Changed to match lg breakpoint
+      const mobile = width < 1024;
       const tablet = width >= 1024 && width < 1280;
       
       setIsMobile(mobile);
       
-      // Auto-collapse on mobile and tablet, auto-expand on desktop
       if (mobile) {
         setIsCollapsed(true);
       } else if (tablet) {

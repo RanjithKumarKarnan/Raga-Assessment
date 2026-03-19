@@ -3,29 +3,26 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '../../../components/ui/Button';
 import { Card, CardContent, CardHeader } from '../../../components/ui/Card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../../components/ui/Table';
-import { ToggleSwitch } from '../../../components/ui/ToggleSwitch';
-import { LoadingSpinner } from '../../../components/ui/LoadingSpinner';
 import { Layout } from '../../../components/layout/Layout';
 import { PatientModal } from '../../../components/patients/PatientModal';
+import { LoadingSpinner } from '../../../components/ui/LoadingSpinner';
 import { patientService } from '../../../services/patientService';
 import type { Patient } from '../../../types/patient';
-import { Users, Activity, Search, Plus, Edit, Trash2, Eye } from 'lucide-react';
+import { Users, Activity, Search, Plus, Edit, Eye } from 'lucide-react';
 
 export const PatientsPage: React.FC = () => {
   const navigate = useNavigate();
   const [patients, setPatients] = useState<Patient[]>([]);
   const [loading, setLoading] = useState(true);
-  // Mobile: grid only, Desktop: toggle between table and grid (initially table)
   const [viewMode, setViewMode] = useState<'grid' | 'table'>('table');
 
   useEffect(() => {
     const checkMobile = () => {
       const mobile = window.innerWidth < 640;
-      // Force grid on mobile, keep user choice on desktop
-      if (mobile && viewMode === 'table') {
+      if (mobile) {
         setViewMode('grid');
-      } else if (!mobile && viewMode === 'grid') {
-        setViewMode('table'); // Reset to table on desktop
+      } else {
+        setViewMode('table');
       }
     };
 
@@ -69,17 +66,6 @@ export const PatientsPage: React.FC = () => {
 
   const handleViewDetails = (patient: Patient) => {
     navigate(`/patients/${patient.id}`);
-  };
-
-  const handleDeletePatient = async (patient: Patient) => {
-    if (window.confirm(`Are you sure you want to delete ${patient.name}?`)) {
-      try {
-        await patientService.deletePatient(patient.id);
-        await fetchPatients();
-      } catch (error) {
-        console.error('Error deleting patient:', error);
-      }
-    }
   };
 
   interface CreatePatientData {
@@ -148,11 +134,9 @@ interface UpdatePatientData extends Partial<CreatePatientData> {
       subtitle={`Total Patients: ${filteredPatients.length}`}
     >
       <div className="space-y-6">
-        {/* Controls */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
           <div className="flex flex-col sm:flex-row sm:items-center space-y-3 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
             <div className="flex items-center space-x-4">
-              {/* Only show toggle on desktop */}
               <div className="hidden sm:flex items-center space-x-2">
                 <button
                   onClick={() => setViewMode('table')}
@@ -200,7 +184,6 @@ interface UpdatePatientData extends Partial<CreatePatientData> {
           </Button>
         </div>
 
-        {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card className="rounded-2xl border border-gray-100 shadow-sm">
             <CardContent className="p-5">
@@ -228,7 +211,6 @@ interface UpdatePatientData extends Partial<CreatePatientData> {
           </Card>
         </div>
 
-        {/* Patient Grid/Table */}
         {filteredPatients.length === 0 ? (
           <Card className="rounded-xl border border-gray-100 shadow-sm">
             <CardContent className="p-6 sm:p-8 lg:p-12 text-center">
@@ -241,7 +223,6 @@ interface UpdatePatientData extends Partial<CreatePatientData> {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             {filteredPatients.map((patient) => (
               <Card key={patient.id} className="rounded-xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 group overflow-hidden">
-                {/* Patient Header */}
                 <div className="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-4 border-b border-gray-100">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
@@ -263,9 +244,7 @@ interface UpdatePatientData extends Partial<CreatePatientData> {
                   </div>
                 </div>
 
-                {/* Patient Details */}
                 <CardContent className="p-6 space-y-6">
-                  {/* Key Information */}
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div>
@@ -290,7 +269,6 @@ interface UpdatePatientData extends Partial<CreatePatientData> {
                     </div>
                   </div>
 
-                  {/* Allergies Section */}
                   {patient.allergies && patient.allergies.length > 0 && (
                     <div className="pt-4 border-t border-gray-100">
                       <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">Allergies</p>
@@ -304,7 +282,6 @@ interface UpdatePatientData extends Partial<CreatePatientData> {
                     </div>
                   )}
 
-                  {/* Action Buttons */}
                   <div className="pt-4 border-t border-gray-100 flex space-x-3">
                     <Button 
                       size="sm" 
@@ -408,7 +385,6 @@ interface UpdatePatientData extends Partial<CreatePatientData> {
         )}
       </div>
       
-      {/* Patient Modal */}
       <PatientModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
