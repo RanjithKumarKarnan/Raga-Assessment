@@ -50,9 +50,13 @@ export const AppRoutes: React.FC = () => {
         <Route
           path="/"
           element={
-            <ProtectedRoute>
-              <DashboardPage />
-            </ProtectedRoute>
+            isAuthenticated ? (
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            ) : (
+              <Navigate to="/login" replace />
+            )
           }
         />
         <Route
