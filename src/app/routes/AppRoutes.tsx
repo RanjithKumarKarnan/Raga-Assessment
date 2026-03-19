@@ -9,20 +9,31 @@ const SignupPage = React.lazy(() => import('../../modules/auth/pages/SignupPage'
 const DashboardPage = React.lazy(() => import('../../modules/dashboard/pages/DashboardPage'));
 const AnalyticsPage = React.lazy(() => import('../../modules/analytics/pages/AnalyticsPage'));
 const PatientsPage = React.lazy(() => import('../../modules/patients/pages/PatientsPage'));
+const PatientDetailsPage = React.lazy(() => import('../../modules/patients/pages/PatientDetailsPage'));
 
 export const AppRoutes: React.FC = () => {
   const { isAuthenticated, isLoading } = useAuthStore();
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <LoadingSpinner size="lg" />
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <LoadingSpinner size="lg" />
+          <p className="mt-4 text-gray-600">Loading application...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <Suspense fallback={<LoadingSpinner />}>
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <LoadingSpinner size="lg" />
+          <p className="mt-4 text-gray-600">Loading page...</p>
+        </div>
+      </div>
+    }>
       <Routes>
         <Route 
           path="/login" 
@@ -57,6 +68,14 @@ export const AppRoutes: React.FC = () => {
           element={
             <ProtectedRoute>
               <PatientsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/patients/:id"
+          element={
+            <ProtectedRoute>
+              <PatientDetailsPage />
             </ProtectedRoute>
           }
         />

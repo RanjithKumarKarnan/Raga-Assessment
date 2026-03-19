@@ -30,7 +30,9 @@ class PatientService {
     const stored = localStorage.getItem('patients');
     if (stored) {
       this.patients = JSON.parse(stored);
-      this.nextId = Math.max(...this.patients.map(p => parseInt(p.id))) + 1;
+      // Fix the nextId calculation to handle string IDs properly
+      const maxId = Math.max(...this.patients.map(p => parseInt(p.id) || 0));
+      this.nextId = maxId + 1;
     } else {
       this.patients = [
         {
@@ -79,6 +81,7 @@ class PatientService {
           updatedAt: new Date().toISOString()
         }
       ];
+      this.nextId = 4; // Start from 4 since we have 3 mock patients
       this.saveToLocalStorage();
     }
   }
@@ -95,7 +98,10 @@ class PatientService {
 
   async getPatientById(id: string): Promise<Patient | null> {
     await new Promise(resolve => setTimeout(resolve, 100));
-    return this.patients.find(p => p.id === id) || null;
+    const patient = this.patients.find(p => p.id === id);
+    console.log('Looking for patient with ID:', id, 'Found:', patient);
+    console.log('All patients:', this.patients.map(p => ({ id: p.id, name: p.name })));
+    return patient || null;
   }
 
   async createPatient(data: CreatePatientData): Promise<Patient> {
@@ -109,9 +115,14 @@ class PatientService {
       updatedAt: new Date().toISOString()
     };
 
+    console.log('Creating new patient:', newPatient);
+    console.log('Current nextId:', this.nextId);
+
     this.patients.push(newPatient);
     this.nextId++;
     this.saveToLocalStorage();
+    
+    console.log('All patients after creation:', this.patients.map(p => ({ id: p.id, name: p.name })));
     
     return newPatient;
   }
